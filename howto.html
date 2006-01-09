@@ -1,0 +1,231 @@
+<!-- $Id: howto.html,v 1.4 2003/10/26 22:51:10 shred Exp $ -->
+<html>
+<head>
+  <title>PHP Mini Gallery</title>
+</head>
+<body>
+<h1>PHP Mini Gallery</h1>
+<p id="summary">
+  Mit diesem PHP-Script erhält man im Handumdrehen eine komplette Galerie.
+</p>
+<p>
+  Features sind eine leichte Anpassbarkeit des Layouts, automatische Thumbnail-Generierung
+  und optional Untertexte für jedes Bild.
+</p>
+<h2>Voraussetzungen</h2>
+<p>
+  Das Script ist recht genügsam. PHP 4.1 reicht bereits aus, auch Register Globals
+  können ein- oder ausgeschaltet sein. Für die Erzeugung der Thumbnails brauchst
+  du entweder GD2, <a href="http://www.imagemagick.org" class="ext">ImageMagick</a>
+  oder zur Not auch GD. Wenn du ImageMagick verwendest, muss der SafeMode
+  allerdings deaktiviert sein. Das Script arbeitet komplett auf Dateiebene
+  und benötigt keine Datenbank.
+</p>
+<p>
+  Die PHP Mini Gallery findest du im <a href="http://www.shredzone.net/download/linux/">Download-Bereich</a>
+  der Shredzone.
+</p>
+<h2>Verwendung</h2>
+<p>
+  Die Verwendung ist kinderleicht. Zuerst legst du für die Galerie ein Verzeichnis an.
+  Achte darauf, dass das Script in diesem Verzeichnis Dateien anlegen darf.
+</p>
+<p>
+  Dort legst du nun sämtliche Bilder ab. Als Bildformate sind nur JPEG, PNG und GIF erlaubt.
+  Die Dateinamen müssen einen passenden Suffix haben und dürfen nicht mit <tt>th_</tt>
+  beginnen, da diese Namen für die Thumbnails reserviert sind. Die PHP Mini Gallery zeigt
+  die Bilder nachher in alphabetischer Reihenfolge der Dateinamen an. Ich habe mir deshalb
+  angewöhnt, die Bilder <code>01.jpg</code>, <code>02.jpg</code> und so weiter zu nennen,
+  aber notwendig ist das nicht.
+</p>
+<p>
+  Wenn du zu einem Bild einen Untertitel haben möchtest (zum Beispiel eine Beschreibung
+  des Bildinhalts), kannst du den Text in eine Datei ablegen, die genau so heißt wie das
+  entsprechende Bild, jedoch mit einem zusätzlichen Suffix <tt>.txt</tt> angehängt.
+  Beispiel: für das Bild <code>04.jpg</code> ist der Name der Untertitel-Datei <code>04.jpg.txt</code>.
+</p>
+<p>
+  Zuletzt brauchst du nur noch die beiden PHP-Dateien <code>index.php</code> und <code>template.php</code>
+  aus dem Archiv in das Verzeichnis ablegen. Und fertig ist die Galerie!
+</p>
+<p>
+  Wenn du die Seite nun im Browser aufrufst, siehst du zuerst einen Index Print mit den
+  Thumbnails aller Grafiken. Beim ersten Aufruf werden die Thumbnails automatisch erzeugt
+  und in gleichnamige Dateien mit <tt>th_</tt> am Anfang und <tt>.jpg</tt> am Ende abgelegt
+  (Beispiel: das Thumbnail für das Bild <code>04.jpg</code> heißt <code>th_04.jpg.jpg</code>).
+  Dieser erste Aufruf kann daher eine Zeit lang brauchen, bis alle Thumbnails erzeugt sind.
+  Bei weiteren Aufrufen werden dann jedoch die Thumbnail-Dateien verwendet, und der Aufbau
+  ist dann sehr rasch. PHP Mini Gallery erkennt übrigens, wenn du nachträglich ein Bild änderst,
+  und erzeugt dann automatisch ein neues Thumbnail dafür.
+</p>
+<p>
+  Durch Klicken auf ein Thumbnail erhälst du die Großansicht des Bildes. Von dort an kannst du
+  durch einen Klick auf das Bild das nächste Bild ansehen, oder mit der Navigationsleiste
+  beliebig vor- und zurückspringen.
+</p>
+<h2>Konfiguration</h2>
+<p>
+  Am Anfang des Scripts <code>index.php</code> befinden sich ein paar Konfigurationsparameter,
+  die vom Default her bereits für die meisten Zwecke ausreichen, aber auch angepasst werden
+  können.
+</p>
+<pre>
+  $CONFIG['thumb.width']    = 100;      // Thumbnail width (pixels)
+  $CONFIG['thumb.height']   = 100;      // Thumbnail height (pixels)
+</pre>
+<p>
+  Hier wird maximale Größe der Thumbnails festgelegt. Beim Verkleinern achtet die PHP
+  Mini Gallery aber darauf, dass das Seitenverhältnis erhalten bleibt.
+</p>
+<pre>
+  $CONFIG['thumb.scale']    = 'gd2';    // Set to 'gd2', 'im' or 'gd'
+  $CONFIG['tool.imagick']   = '/usr/X11R6/bin/convert';  // Path to convert
+</pre>
+<p>
+  Hier wird das Skalierungstool festgelegt.
+  <ul>
+    <li><tt>gd2</tt> verwendet die GD2-Library, die bei den meisten modernen
+      PHP-Installationen mit installiert ist. Es liefert eine gute Qualität bei
+      geringem Installationsaufwand und ist daher die empfohlene Einstellung.</li>
+    <li><tt>im</tt> verwendet <a href="http://www.imagemagick.org" class="ext">ImageMagick</a>
+      zum Skalieren. Der Pfad zu dem <tt>convert</tt>-Tool muss dann in
+      <tt>'tool.imagick'</tt> eingestellt werden! Ein guter Ersatz, wenn
+      GD2 nicht zur Verfügung steht.</li>
+    <li><tt>gd</tt> verwendet die alte GD-Library, welche in fast allen
+      PHP-Installationen verfügbar ist. Das Ergebnis ist jedoch ziemlich
+      schlecht, so dass dies hier nur als absolute Notlösung betrachtet
+      werden sollte.</li>
+  </ul>
+</p>
+<p>
+  Wichtig: der Pfad zum ImageMagick-Convert-Tool <em>muss</em> absolut angegeben
+  werden. Bei Windows müssen außerdem die Backslashes verdoppelt werden
+  (<tt>'C:\\pfad\\zu\\convert.exe'</tt>).
+</p>
+<pre>
+  $CONFIG['index.cols']     = 6;        // Colums per row on index print
+</pre>
+<p>
+  Anzahl der Bildspalten pro Zeile in dem Index-Print.
+</p>
+<pre>
+  $CONFIG['template']       = 'template.php';   // Template file
+</pre>
+<p>
+  Pfad zu der Template-Datei, die für die Ausgabe verwendet wird. Wenn du
+  eine zentrale Template-Datei für mehrere Galerien verwenden möchtest, kannst
+  du hier den Pfad auf diese Datei einstellen. Die Galerie selbst braucht dann
+  zum Betrieb nur noch die <tt>index.php</tt>-Datei.
+</p>
+<h2>Einfache Layout-Anpassung</h2>
+<p>
+  Die PHP Mini Gallery ist so gebaut, dass sämtliche Designänderungen nur in
+  der <tt>template.php</tt> stattfinden. Dazu gibt es ein paar besondere Tags,
+  die verwendet werden können. Die Galerie kann so völlig ohne PHP-Kenntnisse
+  angepasst werden.
+</p>
+<p>
+  Folgende Tags stehen zur Verfügung:
+  <dl>
+    <dt><tt>&lt;pmg:if page="index"&gt;</tt>...<tt>&lt;/pmg:if&gt;</tt></dt>
+    <dd>Der Inhalt dieses Containers wird nur an den Browser geschickt, wenn
+      die Index-Seite angezeigt werden soll.</dd>
+    <dt><tt>&lt;pmg:if page="picture"&gt;</tt>...<tt>&lt;/pmg:if&gt;</tt></dt>
+    <dd>Der Inhalt dieses Containers wird nur an den Browser geschickt, wenn
+      ein Bild angezeigt werden soll. Beide <tt>&lt;pmg:if&gt;</tt>-Tags
+      lassen sich nicht schachteln, aber beliebig oft verwenden.</dd>
+    <dt><tt>&lt;pmg:first&gt;...&lt;/pmg:first&gt;</tt></dt>
+    <dd>Ein Link zum ersten Bild der Galerie. Lässt sich verwenden wie ein
+      <tt>&lt;a&gt;</tt>-Tag. Gibt es das Bild nicht, wird der Link samt
+      Inhalt weggelassen. Beispiel: <tt>&lt;pmg:first&gt;[ Erstes ]&lt;/pmg:first&gt;</tt></dd>
+    <dt><tt>&lt;pmg:last&gt;...&lt;/pmg:last&gt;</tt></dt>
+    <dd>Analog dazu: Link auf das letzte Bild der Galerie.</dd>
+    <dt><tt>&lt;pmg:toc&gt;...&lt;/pmg:toc&gt;</tt></dt>
+    <dd>Analog dazu: Link auf die Index-Print-Seite der Galerie.</dd>
+    <dt><tt>&lt;pmg:prev&gt;...&lt;/pmg:prev&gt;</tt></dt>
+    <dd>Analog dazu: Link auf das vorhergehende Bild.</dd>
+    <dt><tt>&lt;pmg:next&gt;...&lt;/pmg:next&gt;</tt></dt>
+    <dd>Analog dazu: Link auf das nächste Bild.</dd>
+    <dt><tt>&lt;pmg:image/&gt;</tt></dt>
+    <dd>Bei Einzelbildansicht: das komplette Bild-Tag mit Link auf das folgende
+      Bild. Die CSS-Klasse <tt>picimg</tt> erlaubt die Anpassung der Darstellung
+      von diesem Bild. Beim Index-Print ist dieses Tag leer.</dd>
+    <dt><tt>&lt;pmg:caption/&gt;</tt></dt>
+    <dd>Wenn zu diesem Bild ein Untertitel (engl. Caption) existiert, wird hier
+      der Text eingefügt. Sonst ist dieses Tag leer.</dd>
+    <dt><tt>&lt;pmg:index/&gt;</tt></dt>
+    <dd>Bei Index-Print-Ansicht: die komplette Tabelle mit den Thumbnails
+      aller Bilder. Die CSS-Klasse <tt>tabindex</tt> erlaubt die Anpassung der
+      Darstellung der Tabelle, die CSS-Klasse <tt>thumbimg</tt> ändert die
+      Darstellung der Thumbnails. Bei Einzelbildansicht ist dieses Tag leer.</dd>
+    <dt><tt>&lt;pmg:count/&gt;</tt></dt>
+    <dd>Wird ersetzt durch die Gesamtanzahl der Bilder.</dd>
+    <dt><tt>&lt;pmg:current/&gt;</tt></dt>
+    <dd>Wird ersetzt durch die laufende Nummer des aktuellen Bilds. Bei
+      Index-Print-Ansicht leer.</dd>
+  </dl>
+</p>
+<p>
+  Der Tag-Parser ist nicht außergewöhnlich intelligent und lässt sich leicht
+  austricksen. Du solltest dich also sehr exakt an die hier beschriebene
+  Schreibweise halten, da das Tag sonst eventuell nicht erkannt und umgesetzt
+  wird. Das mitgelieferte <tt>template.php</tt> ist ein gutes Anwendungsbeispiel.
+</p>
+<h2>Komplexe Layout-Anpassung</h2>
+<p>
+  Das <tt>template.php</tt> wird als PHP-Script eingebunden und kann auch
+  PHP-Programmabschnitte enthalten. In besonders komplexen Fällen kann man
+  die Ausgabe sogar komplett hier einprogrammieren, statt die Spezial-Tags
+  zu verwenden. Alle notwendigen Informationen stehen dafür in dem globalen
+  Array <code>$CONTEXT</code> zur Verfügung.
+</p>
+<p>
+  Das <code>$CONTEXT</code>-Array enthält folgende Keys:
+  <dl>
+    <dt><tt>'page'</tt></dt>
+    <dd>Bei Bildansicht steht hier <tt>'picture'</tt>, beim Index-Print
+      <tt>'index'</tt>.</dd>
+    <dt><tt>'files'</tt></dt>
+    <dd>Ein Array mit den Dateinamen aller Bilder in Ausgabereihenfolge.
+      Die Thumbnails oder Scripte sind hier nicht enthalten.</dd>
+    <dt><tt>'count'</tt></dt>
+    <dd>Die Gesamtanzahl der Bilder</dd>
+    <dt><tt>'current'</tt></dt>
+    <dd>Bei Bildansicht: die laufende Nummer des aktuellen Bildes. Gezählt
+      wird von 1 an. Das aktuelle Bild befindet sich als in <tt>'files'</tt>
+      unter <tt>$CONTEXT['current']-1</tt>.</dd>
+    <dt><tt>'first'</tt></dt>
+    <dd>Dateiname des ersten Bildes.</dd>
+    <dt><tt>'last'</tt></dt>
+    <dd>Dateiname des letzten Bildes.</dd>
+    <dt><tt>'prev'</tt></dt>
+    <dd>Bei Bildansicht: Dateiname des vorherigen Bildes. Wenn bereits das
+      erste Bild angezeigt wird, ist dieser Eintrag nicht vorhanden.</dd>
+    <dt><tt>'next'</tt></dt>
+    <dd>Bei Bildansicht: Dateiname des nächsten Bildes. Wenn bereits das
+      letzte Bild angezeigt wird, ist dieser Eintrag nicht vorhanden.</dd>
+    <dt><tt>'pictag'</tt></dt>
+    <dd>Bei Bildansicht: das vollständige Image-Tag für das Bild mit Link
+      auf das folgende Bild.</dd>
+    <dt><tt>'caption'</tt></dt>
+    <dd>Bei Bildansicht: wenn das aktuelle Bild eine Untertitel-Datei hat,
+      befindet sich der Inhalt der Datei hier drin.</dd>
+    <dt><tt>'indextag'</tt></dt>
+    <dd>Bei Index-Print-Ansicht: die vollständige Thumbnail-Tabelle mit
+      Links auf die entsprechenden Bilder.</dd>
+  </dl>
+</p>
+<p>
+  Die Spezialtags werden nach Ausführung des <tt>template.php</tt> ersetzt, so
+  dass du das PHP-Script und Spezialtags beliebig mischen kannst. Auf den Inhalt
+  dieses Arrays sollte übrigens nur lesend zugegriffen werden.
+</p>
+<h2>GNU Public Licence</h2>
+<p>
+  Die PHP Mini Gallery wird unter der <a href="http://www.gnu.org/licenses/gpl.html" class="ext">GNU Public Licence</a>
+  mit Source veröffentlicht. Du kannst die PHP Mini Gallery in jedem Fall kostenlos verwenden, es wäre aber
+  nett, wenn du einen entsprechenden Hinweis mit Link auf <tt>http://www.shredzone.net/go/minigallery</tt>
+  darstellen würdest.
+</p>
+</body>
+</html>
