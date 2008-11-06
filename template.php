@@ -83,7 +83,7 @@
     <div align="right">
       <pmg:first>[ Start... ]</pmg:first>
     </div>
-    </pmg:index/>
+    <pmg:index/>
   </pmg:if>
 
   <pmg:if page="picture">

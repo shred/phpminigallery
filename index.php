@@ -1,7 +1,7 @@
 <?php
   /**
-   * The PHP Mini Gallery V1.1
-   * (C) 2003 Richard "Shred" Körber -- all rights reserved
+   * The PHP Mini Gallery V1.2
+   * (C) 2008 Richard "Shred" Körber -- all rights reserved
    * http://www.shredzone.net/go/minigallery
    *
    * Requirements: PHP 4.1 or higher, GD (GD2 recommended) or ImageMagick
@@ -189,32 +189,33 @@
     $CONTEXT['page']  = 'index';
     $CONTEXT['first'] = $ayFiles[0];
     $CONTEXT['last']  = $ayFiles[count($ayFiles)-1];
-    //--- Assemble the index table ---
-    $page = '<table class="tabindex">'."\n";
-    $cnt  = 0;
-    foreach($ayFiles as $key=>$file) {
-      if($cnt % $CONFIG['index.cols'] == 0) $page .= '<tr>';
-      $page .= sprintf(
-        '<td><a href="index.php?pic=%s"><img class="thumbimg" src="index.php?thumb=%s" alt="#%s" border="0" /></a></td>',
-        htmlspecialchars($file),
-        htmlspecialchars($file),
-        htmlspecialchars($key+1)
-      );
-      $cnt++;
-      if($cnt % $CONFIG['index.cols'] == 0) $page .= '</tr>'."\n";
-    }
-    //--- Fill empty cells in last row ---
-    $close = false;
-    while($cnt % $CONFIG['index.cols'] != 0) {
-      $page .= '<td>&nbsp;</td>';
-      $close = true;
-      $cnt++;
-    }
-    if($close) $page .= '</tr>'."\n";
-    $page .= '</table>';
-    //--- Set content ---
-    $CONTEXT['indextag'] = $page;
   }
+
+  //--- Assemble the index table ---
+  $page = '<table class="tabindex">'."\n";
+  $cnt  = 0;
+  foreach($ayFiles as $key=>$file) {
+    if($cnt % $CONFIG['index.cols'] == 0) $page .= '<tr>';
+    $page .= sprintf(
+      '<td><a href="index.php?pic=%s"><img class="thumbimg" src="index.php?thumb=%s" alt="#%s" border="0" /></a></td>',
+      htmlspecialchars($file),
+      htmlspecialchars($file),
+      htmlspecialchars($key+1)
+    );
+    $cnt++;
+    if($cnt % $CONFIG['index.cols'] == 0) $page .= '</tr>'."\n";
+  }
+  //--- Fill empty cells in last row ---
+  $close = false;
+  while($cnt % $CONFIG['index.cols'] != 0) {
+    $page .= '<td>&nbsp;</td>';
+    $close = true;
+    $cnt++;
+  }
+  if($close) $page .= '</tr>'."\n";
+  $page .= '</table>';
+  //--- Set content ---
+  $CONTEXT['indextag'] = $page;
   
   /*=== GET TEMPLATE CONTENT ===*/
   ob_start();
@@ -272,7 +273,7 @@
   }
   
   //--- Image, Index Print, Caption ---
-  $aySearch  = array('<pmg:image/>', '</pmg:index/>', '<pmg:caption/>', '<pmg:count/>', '<pmg:current/>');
+  $aySearch  = array('<pmg:image/>', '<pmg:index/>', '<pmg:caption/>', '<pmg:count/>', '<pmg:current/>');
   $ayReplace = array(
     (isset($CONTEXT['pictag'])   ? $CONTEXT['pictag']   : ''),
     (isset($CONTEXT['indextag']) ? $CONTEXT['indextag'] : ''),
