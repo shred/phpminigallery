@@ -1,7 +1,7 @@
 <?php
   /**
    * The PHP Mini Gallery V1.1
-   * (C) 2003 Richard "Shred" Körber -- all rights reserved
+   * (C) 2003 Richard "Shred" Koerber -- all rights reserved
    * http://www.shredzone.net/go/minigallery
    *
    * This is an example template. Feel free to modify it as you like.
@@ -37,40 +37,40 @@
       font-family: arial,helvetica,sans-serif;
       font-size: 16px
     }
-    
+
     a {
       text-decoration: none;
     }
-    
+
     address {
       margin-top: 10px;
       border-top: 1px solid #000000;
       font-size: 80%;
       text-align: center;
     }
-    
+
     .tabindex {
       width: 100%;
     }
-    
+
     .tabindex TD {
       width: auto;
       background-color: #C0C0C0;
       text-align: center;
       height: 110px;
     }
-    
+
     .thumbimg {
       background-color: #000000;
       padding: 3px;
     }
-    
+
     .picture {
       background-color: #C0C0C0;
       text-align: center;
       padding: 5px;
     }
-    
+
     .picimg {
       background-color: #000000;
       padding: 5px;
@@ -99,7 +99,5 @@
       <pmg:caption/>
     </div>
   </pmg:if>
-  
-  <address>This gallery is powered by <a href="http://www.shredzone.net/go/minigallery">PHP Mini Gallery</a>.</address>
 </body>
 </html>

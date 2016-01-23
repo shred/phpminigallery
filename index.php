@@ -286,6 +286,6 @@
   /*=== PRINT TEMPLATE ===*/
   ob_start('ob_gzhandler');
   print($template);
-  print("\n".'<!-- Created by PHP Mini Gallery, (C) Richard Shred Koerber, http://www.shredzone.net/go/minigallery -->'."\n");
+  print("\n".'<!-- Created by PHP Mini Gallery, (C) Richard Shred Koerber, https://github.com/shred/phpminigallery -->'."\n");
   exit();
 ?>
