@@ -106,6 +106,10 @@
       font-weight: 600;
       font-size: 1.75rem;
     }
+
+    .row > * {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>

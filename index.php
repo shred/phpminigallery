@@ -28,7 +28,7 @@
   $CONFIG['thumb.width']    = 100;      // Thumbnail width (pixels)
   $CONFIG['thumb.height']   = 100;      // Thumbnail height (pixels)
   $CONFIG['pic.width']    = 300;      // Thumbnail width (pixels)
-  $CONFIG['pic.height']   = 300;      // Thumbnail height (pixels)
+  $CONFIG['pic.height']   = "auto";      // Thumbnail height (pixels)
   $CONFIG['thumb.scale']    = 'gd2';    // Set to 'gd2', 'im' or 'gd'
   $CONFIG['tool.imagick']   = '/usr/bin/convert';   // Path to convert
   $CONFIG['index.cols']     = 6;        // Colums per row on index print
