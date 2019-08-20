@@ -25,13 +25,23 @@
 ?>
 <html>
 <head>
-  <pmg:if page="index">
-    <div>A gallery of <pmg:count/> pictures</div>
-  </pmg:if>
-  <pmg:if page="picture">
-    <div>Picture <pmg:current/>/<pmg:count/></div>
-  </pmg:if>
-  <style type="text/css"><!--
+
+<pmg:if page="index">
+  <title>Image Gallery: <pmg:count/> pictures</title>
+</pmg:if>
+<pmg:if page="picture">
+  <title>Picture <pmg:current/>/<pmg:count/></title>
+</pmg:if>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+<!-- jQuery and Bootstrap  -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+
+  <style type="text/css">
     body {
       background-color: #FFFFFF;
       font-family: arial,helvetica,sans-serif;
@@ -79,12 +89,34 @@
       padding: 5px;
       margin-bottom: 3px;
     }
-  //--></style>
+
+    .row {
+      margin-bottom: 10px;
+    }
+
+    figure {
+      text-align: center;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 1.75rem;
+    }
+  </style>
 </head>
 <body>
+<div class="container">
+
+  <pmg:if page="index">
+    <div class="title">A gallery of <pmg:count/> pictures</div>
+  </pmg:if>
+  <pmg:if page="picture">
+    <div class="title">Picture <pmg:current/>/<pmg:count/></div>
+  </pmg:if>
   <pmg:if page="index">
     <div align="right">
       <pmg:first>[ Start... ]</pmg:first>
+      <br/><br/>
     </div>
     <pmg:index/>
   </pmg:if>
@@ -96,6 +128,7 @@
       <pmg:prev>[ Previous ]&nbsp;</pmg:prev>
       <pmg:next>[ Next ]&nbsp;</pmg:next>
       <pmg:last>[ Last ]</pmg:last>
+      <br/><br/>
     </div>
     <div class="picture">
       <pmg:image/><br />
@@ -107,5 +140,6 @@
       <pmg:caption><?php echo $title; ?></pmg:caption>
     </div>
   </pmg:if>
+</div>
 </body>
 </html>

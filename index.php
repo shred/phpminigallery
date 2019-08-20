@@ -118,7 +118,7 @@
       //--- Tell there is no image like that ---
       if(is_file($thfile)) unlink($thfile);         // Delete a matching thumbnail file
       header('HTTP/1.0 404 Not Found');
-      print('Sorry, this picture was not found');
+      print('Sorry, this picture was not found or you have zero pictures in the folder.');
       exit();
     }
   }
@@ -187,34 +187,40 @@
   else{
     //--- Set context ---
     $CONTEXT['page']  = 'index';
-    $CONTEXT['first'] = $ayFiles[0];
-    $CONTEXT['last']  = $ayFiles[count($ayFiles)-1];
+    $CONTEXT['first'] = @$ayFiles[0];
+    $CONTEXT['last']  = @$ayFiles[count($ayFiles)-1];
   }
 
   //--- Assemble the index table ---
-  $page = '<table class="tabindex">'."\n";
+  // $page = '<table class="tabindex">'."\n";
+  $page = "";
   $cnt  = 0;
   foreach($ayFiles as $key=>$file) {
-    if($cnt % $CONFIG['index.cols'] == 0) $page .= '<tr>';
+    //if($cnt % $CONFIG['index.cols'] == 0) $page .= '<tr>';
+    $col_num = $CONFIG['index.cols']>12 ? "1":strval(12/$CONFIG['index.cols']);
+    if($cnt % $CONFIG['index.cols'] == 0) $page .= '<div class="row">';
     $page .= sprintf(
-      '<td>
+      '<div class="%s">
         <a href="index.php?pic=%s">
           <figure>
-            <img class="thumbimg" src="index.php?thumb=%s" alt="#%s" border="0" />
+            <img class="thumbimg" src="index.php?thumb=%s" alt="#%s" border="0" width="%s" height="%s" />
             <figcaption>%s</figcaption>
           </figure>
         </a>
-      </td>',
+      </div> <!--/ column -->',
+      "col-md-" . $col_num,
       htmlspecialchars($file),
       htmlspecialchars($file),
       htmlspecialchars($key+1),
+      $CONFIG['thumb.width'],
+      $CONFIG['thumb.height'],
       preg_replace("#.png|.jpg#", "", $file)
     );
     // var_dump($file);
     // die();
     // $ayFiles["files"][ $ayFiles["current"]-1 ]
     $cnt++;
-    if($cnt % $CONFIG['index.cols'] == 0) $page .= '</tr>'."\n";
+    if($cnt % $CONFIG['index.cols'] == 0) $page .= '</div> <!--/ row -->'."\n";
   } // foreach
   //--- Fill empty cells in last row ---
   $close = false;
@@ -224,7 +230,6 @@
     $cnt++;
   }
   if($close) $page .= '</tr>'."\n";
-  $page .= '</table>';
   //--- Set content ---
   $CONTEXT['indextag'] = $page;
   
@@ -295,8 +300,9 @@
   $template = str_replace($aySearch, $ayReplace, $template);
   
   /*=== PRINT TEMPLATE ===*/
-  ob_start('ob_gzhandler');
+  // ob_start('ob_gzhandler');
   print($template);
   print("\n".'<!-- Created by PHP Mini Gallery, (C) Richard Shred Koerber, https://github.com/shred/phpminigallery -->'."\n");
   exit();
 ?>
+</body></html>
