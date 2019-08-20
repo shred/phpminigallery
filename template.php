@@ -98,6 +98,10 @@
       text-align: center;
     }
 
+    .picimg {
+      margin-top: 10px;
+    }
+
     .title {
       font-weight: 600;
       font-size: 1.75rem;
@@ -135,7 +139,7 @@
       <?php
         $i = $CONTEXT["current"];
         $title = $CONTEXT["files"][$i-1];
-        $title = preg_replace("#.png|.jpg#", "", $title);
+        $title = preg_replace("#.png|.jpg|$path/#", "", $title);
       ?>
       <pmg:caption><?php echo $title; ?></pmg:caption>
     </div>

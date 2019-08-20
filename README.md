@@ -16,6 +16,12 @@ Some features of this gallery script are:
 * No database required
 * Source code available at [GitHub](https://github.com/shred/phpminigallery)
 
+## Updates
+
+Siphon880gh (Weng Fei Fung) added updates to make the image gallery have filename labels, a subfolder for images, and a more mobile-friendly/responsive design. Created a pull request. 
+
+Previously, you place the images into the same folder where there are index.php and template.php which can get messy. Now you must define a subfolder which is less messy. For example, at the beginning of the script `index.php`, add or set  `$path = "img";` and make sure there is a folder `img` in the same folder as index.php and template.php. You can use another folder name other than img if you wish.
+
 ## Prerequisites
 
 This script is quite easy-going. PHP 4.1 is already sufficient, which is provided by almost all web hosts. Register globals may be enabled or disabled. The script is PHP 5 compliant.
@@ -28,9 +34,9 @@ This script is entirely file-based, and does not involve any database programmin
 
 PHP Mini Gallery is very simple to use. You won't need to have any PHP skills.
 
-First, you have to create a directory for the gallery. Make sure that the script is allowed to create files in this directory.
+First, move these files to a directory. Inside that directory, create a folder "img" or whatever folder name you want. This is your images folder. Make sure that the script is allowed to create files in the images folder because it will generate thumbnail files. Also make sure that `$path` is relatively set to this images folder at index.php.
 
-Now you upload all your pictures into this directory. The only image formats allowed are JPEG, PNG and GIF. The file names need to have a correct suffix, and must not start with `th_`, because it is reserved for the thumbnail files. The PHP Mini Gallery shows the pictures in alphabetical order of their file names. I got myself used to name the pictures `01.jpg`, `02.jpg` and so on, but this is not required.
+Now upload all your pictures into the images folder. The only image formats allowed are JPEG, PNG and GIF. The file names need to have a correct suffix, and must not start with `th_`, because it is reserved for the thumbnail files. The PHP Mini Gallery shows the pictures in alphabetical order of their file names. I got myself used to name the pictures `01.jpg`, `02.jpg` and so on, but this is not required.
 
 If you want to add a caption to a picture (e.g. a description of the picture's content), you can place the text in another file, which is named like the picture this caption will belong to, but has an additional `.txt` suffix attached. Example: the caption file for the picture `04.jpg` would be named `04.jpg.txt`.
 

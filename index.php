@@ -27,22 +27,41 @@
   $CONFIG = array();
   $CONFIG['thumb.width']    = 100;      // Thumbnail width (pixels)
   $CONFIG['thumb.height']   = 100;      // Thumbnail height (pixels)
+  $CONFIG['pic.width']    = 300;      // Thumbnail width (pixels)
+  $CONFIG['pic.height']   = 300;      // Thumbnail height (pixels)
   $CONFIG['thumb.scale']    = 'gd2';    // Set to 'gd2', 'im' or 'gd'
   $CONFIG['tool.imagick']   = '/usr/bin/convert';   // Path to convert
   $CONFIG['index.cols']     = 6;        // Colums per row on index print
   $CONFIG['template']       = 'template.php';       // Template file
-  
+  $path = "img";
+
+  /*=== VALIDATION ===*/
+  try {
+    $try = @opendir(dirname(__FILE__) . '/' . $path);
+    if(is_null($try) || $try===false) {
+      die("<br/>Error: Can't open subfolder \"$path\". Does it exist? Is permission set right?");
+    }
+  } catch (Exception $e) {
+    die($e);
+  }
   
   /*=== SHOW A THUMBNAIL? ===*/
+    // var_dump(is_file($path . "/" . $file));
+    // var_dump(is_readable($path . "/" . $file));
   if(isset($_GET['thumb'])) {
     $file = trim($_GET['thumb']);
     //--- Protect against hacker attacks ---
-    if(preg_match('#\.\.|/#', $file)) die("Illegal characters in path!");
-    $thfile = 'th_'.$file.'.jpg';
-    //--- Get the thumbnail ---
+    // if(preg_match('#\.\.|/#', $file)) die("Illegal characters in path!");
+    $thfile = "$path/" . 'th_'.substr($file, strlen($path)+1).'.jpg';
+    //--- Get the thumbnail ---;
+    // var_dump(($file));
+    // var_dump(($file));
+    // die();
     if(is_file($file) && is_readable($file)) {
+      // die("here");
       //--- Check if the thumbnail is missing or out of date ---
-      if(!is_file($thfile) || (filemtime($file)>filemtime($thfile))) {
+      if(!is_file($path . "/" . $thfile) || (filemtime($path . "/" . $file)>filemtime($path . "/" . $thfile))) {
+        // die("c");
         //--- Get information about the image ---
         $aySize = getimagesize($file);
         if(!isset($aySize)) die("Picture $file not recognized...");
@@ -62,6 +81,7 @@
         $scmode = strtolower($CONFIG['thumb.scale']);
         //--- Create source image ---
         if($scmode!='im') {
+          // die(dirname(__FILE__) . $file);
           switch($aySize[2]) {
             case 1:  $imgPic = imagecreatefromgif($file);  break;
             case 2:  $imgPic = imagecreatefromjpeg($file); break;
@@ -69,6 +89,7 @@
             default: die("Picture $file must be either JPEG, PNG or GIF..."); 
           }
         }
+        // die("d");
         //--- Scale it ---
         switch($scmode) {
           case 'gd2':     // GD2
@@ -86,12 +107,13 @@
               $CONFIG['thumb.width'],
               $CONFIG['thumb.height'],
               $file,
-              $thfile
-            ));          
+              "$path/" . "th_" . substr($file, strlen($path)+1)
+            ));    
             break;
           default:
             die("Unknown scale mode ".$CONFIG['thumb.scale']);
         }
+        
         //--- Save it ---
         if($scmode!='im') {
           imagejpeg($imgThumb, $thfile);
@@ -116,9 +138,10 @@
       exit();
     }else {
       //--- Tell there is no image like that ---
-      if(is_file($thfile)) unlink($thfile);         // Delete a matching thumbnail file
+      if(is_file($path))
       header('HTTP/1.0 404 Not Found');
-      print('Sorry, this picture was not found or you have zero pictures in the folder.');
+      print("Sorry, this picture $thfile was not found or you have zero pictures in the folder.");
+      unlink($thfile); // Delete a matching thumbnail file
       exit();
     }
   }
@@ -128,13 +151,15 @@
   
   /*=== GET FILE LISTING ===*/
   $ayFiles = array();
-  $dh = opendir('.');
+  // die(dirname(__FILE__));
+  $dh = opendir(dirname(__FILE__) . '/' . $path);
   while(($file = readdir($dh)) !== false) {
     if($file{0}=='.') continue;                     // No dirs and temp files
     if(substr($file,0,3) == 'th_') continue;        // No thumbnails
+    // var_dump($file);
     if(preg_match('#\.(jpe?g|png|gif)$#i', $file)) {
-      if(is_file($file) && is_readable($file)) {
-        $ayFiles[] = $file;
+      if(is_file($path . "/" . $file) && is_readable($path . "/" . $file)) {
+        $ayFiles[] = $path . "/" . $file;
       }
     }
   }
@@ -145,8 +170,6 @@
   /*=== SHOW A PICTURE? ===*/
   if(isset($_GET['pic'])) {
     $file = trim($_GET['pic']);
-    //--- Protect against hacker attacks ---
-    if(preg_match('#\.\.|/#', $file)) die("Illegal characters in path!");
     //--- Check existence ---
     if(!(is_file($file) && is_readable($file))) {
       header('HTTP/1.0 404 Not Found');
@@ -166,7 +189,9 @@
     if($index<count($ayFiles)-1)
       $CONTEXT['next']  = $ayFiles[$index+1];
     //--- Assemble the content ---
-    list($pWidth,$pHeight) = getimagesize($file);
+    // list($pWidth,$pHeight) = getimagesize($file);
+    $pWidth = $CONFIG['pic.width'];
+    $pHeight = $CONFIG['pic.height']; 
     $page = sprintf(
       '<img class="picimg" src="%s" width="%s" height="%s" alt="#%s" border="0" />',
       htmlspecialchars($file),
@@ -178,10 +203,10 @@
       $page = sprintf('<a href="index.php?pic=%s">%s</a>', htmlspecialchars($CONTEXT['next']), $page);
     }
     $CONTEXT['pictag'] = $page;
-    if(is_file($file.'.txt') && is_readable($file.'.txt')) {
-      $CONTEXT['caption'] = join('', file($file.'.txt'));
+    if(is_file($path . "/" . $file.'.txt') && is_readable($path . "/" . $file.'.txt')) {
+      $CONTEXT['caption'] = join('', file($path . "/" . $file.'.txt'));
     }
-  }
+  } // $_GET['pic']
   
   /*=== SHOW INDEX PRINT ===*/
   else{
@@ -214,7 +239,7 @@
       htmlspecialchars($key+1),
       $CONFIG['thumb.width'],
       $CONFIG['thumb.height'],
-      preg_replace("#.png|.jpg#", "", $file)
+      preg_replace("#.png|.jpg|$path/#", "", $file)
     );
     // var_dump($file);
     // die();
@@ -225,11 +250,11 @@
   //--- Fill empty cells in last row ---
   $close = false;
   while($cnt % $CONFIG['index.cols'] != 0) {
-    $page .= '<td>&nbsp;</td>';
+    // $page .= '<td>&nbsp;</td>';
     $close = true;
     $cnt++;
   }
-  if($close) $page .= '</tr>'."\n";
+  // if($close) $page .= '</div>'."\n";
   //--- Set content ---
   $CONTEXT['indextag'] = $page;
   
