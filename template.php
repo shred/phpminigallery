@@ -26,10 +26,10 @@
 <html>
 <head>
   <pmg:if page="index">
-    <title>A gallery of <pmg:count/> pictures</title>
+    <div>A gallery of <pmg:count/> pictures</div>
   </pmg:if>
   <pmg:if page="picture">
-    <title>Picture <pmg:current/>/<pmg:count/></title>
+    <div>Picture <pmg:current/>/<pmg:count/></div>
   </pmg:if>
   <style type="text/css"><!--
     body {
@@ -40,6 +40,9 @@
 
     a {
       text-decoration: none;
+    }
+    a:visited {
+      color: blue;
     }
 
     address {
@@ -88,7 +91,7 @@
 
   <pmg:if page="picture">
     <div align="right">
-      <pmg:toc>[ Index ]&nbsp;</pmg:toc>
+      <pmg:toc>[ All Images ]&nbsp;</pmg:toc>
       <pmg:first>[ First ]&nbsp;</pmg:first>
       <pmg:prev>[ Previous ]&nbsp;</pmg:prev>
       <pmg:next>[ Next ]&nbsp;</pmg:next>
@@ -96,7 +99,12 @@
     </div>
     <div class="picture">
       <pmg:image/><br />
-      <pmg:caption/>
+      <?php
+        $i = $CONTEXT["current"];
+        $title = $CONTEXT["files"][$i-1];
+        $title = preg_replace("#.png|.jpg#", "", $title);
+      ?>
+      <pmg:caption><?php echo $title; ?></pmg:caption>
     </div>
   </pmg:if>
 </body>

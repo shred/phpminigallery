@@ -1,7 +1,7 @@
 <?php
   /**
    * The PHP Mini Gallery V1.2
-   * (C) 2008 Richard "Shred" Körber -- all rights reserved
+   * (C) 2008 Richard "Shred" Kï¿½rber -- all rights reserved
    * http://www.shredzone.net/go/minigallery
    *
    * Requirements: PHP 4.1 or higher, GD (GD2 recommended) or ImageMagick
@@ -197,14 +197,25 @@
   foreach($ayFiles as $key=>$file) {
     if($cnt % $CONFIG['index.cols'] == 0) $page .= '<tr>';
     $page .= sprintf(
-      '<td><a href="index.php?pic=%s"><img class="thumbimg" src="index.php?thumb=%s" alt="#%s" border="0" /></a></td>',
+      '<td>
+        <a href="index.php?pic=%s">
+          <figure>
+            <img class="thumbimg" src="index.php?thumb=%s" alt="#%s" border="0" />
+            <figcaption>%s</figcaption>
+          </figure>
+        </a>
+      </td>',
       htmlspecialchars($file),
       htmlspecialchars($file),
-      htmlspecialchars($key+1)
+      htmlspecialchars($key+1),
+      preg_replace("#.png|.jpg#", "", $file)
     );
+    // var_dump($file);
+    // die();
+    // $ayFiles["files"][ $ayFiles["current"]-1 ]
     $cnt++;
     if($cnt % $CONFIG['index.cols'] == 0) $page .= '</tr>'."\n";
-  }
+  } // foreach
   //--- Fill empty cells in last row ---
   $close = false;
   while($cnt % $CONFIG['index.cols'] != 0) {
