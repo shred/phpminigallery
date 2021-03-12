@@ -1,7 +1,7 @@
 <?php
   /**
-   * The PHP Mini Gallery V1.2
-   * (C) 2008 Richard "Shred" Körber -- all rights reserved
+   * The PHP Mini Gallery V1.3
+   * (C) 2008 Richard "Shred" Koerber -- all rights reserved
    * http://www.shredzone.net/go/minigallery
    *
    * Requirements: PHP 4.1 or higher, GD (GD2 recommended) or ImageMagick
@@ -19,8 +19,6 @@
    * You should have received a copy of the GNU General Public License
    * along with this program; if not, write to the Free Software
    * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-   *
-   * $Id: index.php,v 1.5 2003/12/07 14:14:20 shred Exp $
    */
    
   /*=== CONFIGURATION ===*/
@@ -130,7 +128,7 @@
   $ayFiles = array();
   $dh = opendir('.');
   while(($file = readdir($dh)) !== false) {
-    if($file{0}=='.') continue;                     // No dirs and temp files
+    if($file[0]=='.') continue;                     // No dirs and temp files
     if(substr($file,0,3) == 'th_') continue;        // No thumbnails
     if(preg_match('#\.(jpe?g|png|gif)$#i', $file)) {
       if(is_file($file) && is_readable($file)) {

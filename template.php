@@ -1,6 +1,6 @@
 <?php
   /**
-   * The PHP Mini Gallery V1.1
+   * The PHP Mini Gallery V1.3
    * (C) 2003 Richard "Shred" Koerber -- all rights reserved
    * http://www.shredzone.net/go/minigallery
    *
