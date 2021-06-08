@@ -68,13 +68,18 @@
     .picture {
       background-color: #C0C0C0;
       text-align: center;
-      padding: 5px;
+      height: 98%;
     }
 
     .picimg {
       background-color: #000000;
-      padding: 5px;
-      margin-bottom: 3px;
+      padding: 0;
+      margin-bottom: 0;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 98%;
+      display: block;
     }
   //--></style>
 </head>
@@ -99,5 +104,22 @@
       <pmg:caption/>
     </div>
   </pmg:if>
+<script>
+document.onkeydown = function(ev) {
+	console.log("on key down event: ", ev.keyCode)
+	switch(ev.keyCode) {
+	case 37:
+		// left key pressed
+		let prev=document.getElementById('prev')
+		prev.click();
+		break;
+	case 39:
+		// right key pressed
+		let next=document.getElementById('next')
+		next.click();
+		break;
+	}
+}
+</script>
 </body>
 </html>
