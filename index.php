@@ -250,7 +250,7 @@
   if(isset($CONTEXT['prev'])) {
     $aySearch  = array('<pmg:prev>', '</pmg:prev>');
     $ayReplace = array(
-      sprintf('<a href="index.php?pic=%s">', htmlspecialchars($CONTEXT['prev'])),
+      sprintf('<a id="prev" href="index.php?pic=%s">', htmlspecialchars($CONTEXT['prev'])),
       '</a>'
     );
     $template = str_replace($aySearch, $ayReplace, $template);
@@ -262,7 +262,7 @@
   if(isset($CONTEXT['next'])) {
     $aySearch  = array('<pmg:next>', '</pmg:next>');
     $ayReplace = array(
-      sprintf('<a href="index.php?pic=%s">', htmlspecialchars($CONTEXT['next'])),
+      sprintf('<a id="next" href="index.php?pic=%s">', htmlspecialchars($CONTEXT['next'])),
       '</a>'
     );
     $template = str_replace($aySearch, $ayReplace, $template);
