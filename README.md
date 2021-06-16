@@ -2,6 +2,12 @@
 
 With this PHP script you'll get a full featured gallery in an instant. It does not take much more than copying two php files and your images to your web server.
 
+## DISCONTINUED
+
+This project is quite old. It was originally written in PHP 3 and HTML 3.2, and has never really evolved since then. I stopped using PHP many years ago, so I cannot easily test changes to this project any more.
+
+For this reason, I won't maintain this project any longer. Feel free to fork and enhance it!
+
 ## Features
 
 Some features of this gallery script are:
